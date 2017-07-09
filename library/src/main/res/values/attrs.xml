@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Components -->
+    <declare-styleable name="ScPlayerButton">
+        <attr name="scc_source" format="string" />
+        <attr name="scc_color" format="color" />
+        <attr name="scc_font_size" format="dimension" />
+        <attr name="scc_volume" format="float" />
+    </declare-styleable>
+
+</resources>
