@@ -47,7 +47,7 @@ public class ScPlayerButton extends View {
     private static final String PERMISSION = "RECORD_AUDIO";
 
     private static final int UPDATE_FREQUENCY = 10; // Hertz
-    private static final float FONT_SIZE = 32.0f;
+    private static final float FONT_SIZE = 11.0f;
     private static final float VOLUME = 0.7f;
 
 
@@ -147,8 +147,8 @@ public class ScPlayerButton extends View {
         this.mColor = attrArray.getColor(
                 R.styleable.ScPlayerButton_scc_color, Color.parseColor(ScPlayerButton.FOREGROUND_COLOR));
         this.mFontSize = attrArray.getDimension(
-                R.styleable.ScPlayerButton_scc_font_size, ScPlayerButton.FONT_SIZE);
-        this.mVolume = attrArray.getDimension(
+                R.styleable.ScPlayerButton_scc_font_size, this.dipToPixel(ScPlayerButton.FONT_SIZE));
+        this.mVolume = attrArray.getFloat(
                 R.styleable.ScPlayerButton_scc_volume, ScPlayerButton.VOLUME);
 
         // Recycle

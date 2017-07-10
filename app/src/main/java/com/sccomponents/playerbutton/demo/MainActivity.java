@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
         Uri defaultRintoneUri = RingtoneManager
                 .getActualDefaultRingtoneUri(this.getApplicationContext(), RingtoneManager.TYPE_RINGTONE);
         player.setSource(defaultRintoneUri.toString());
-        player.setSeekBar(seekBar);
     }
 
     private void checkRunTimePermission() {
