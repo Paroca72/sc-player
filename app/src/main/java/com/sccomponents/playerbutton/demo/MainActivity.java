@@ -24,9 +24,6 @@ public class MainActivity extends AppCompatActivity {
         ScPlayerButton player = (ScPlayerButton) this.findViewById(R.id.player);
         assert player != null;
 
-        SeekBar seekBar = (SeekBar) this.findViewById(R.id.seekBar);
-        assert seekBar != null;
-
         Uri defaultRintoneUri = RingtoneManager
                 .getActualDefaultRingtoneUri(this.getApplicationContext(), RingtoneManager.TYPE_RINGTONE);
         player.setSource(defaultRintoneUri.toString());

@@ -853,9 +853,9 @@ public class ScPlayerButton extends View {
 
 
     /**
-     * Return the current foreground color
+     * Return the current font size
      *
-     * @return a color
+     * @return a size in pixel
      */
     @SuppressWarnings("unused")
     public float getFontSize() {
@@ -863,9 +863,9 @@ public class ScPlayerButton extends View {
     }
 
     /**
-     * Set the new current foreground color
+     * Set the current font size
      *
-     * @param value the new color
+     * @param value the new sizde in pixel
      */
     @SuppressWarnings("unused")
     public void setFontSize(float value) {
