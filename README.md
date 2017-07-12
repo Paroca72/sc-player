@@ -9,6 +9,8 @@ The button will show the wave-form on playing the media.
 > If not, will show a PLAY/STOP simple icon and NOT will show the wave form.
 <br />
 
+![image](https://github.com/Paroca72/sc-player/blob/master/raw/1.jpg)
+![image](https://github.com/Paroca72/sc-player/blob/master/raw/2.jpg)
 
 #### Public methods
 
