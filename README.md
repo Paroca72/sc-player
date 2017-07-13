@@ -12,6 +12,10 @@ The button will show the wave-form on playing the media.
 ![image](https://github.com/Paroca72/sc-player/blob/master/raw/1.jpg)
 ![image](https://github.com/Paroca72/sc-player/blob/master/raw/2.jpg)
 
+This class inherit from the android View class.<br/ >
+So for example if you would change the background is enough to use the `android:background` property.
+For customize the component please read guide below.
+
 #### Public methods
 
 - **long getDuration()**<br />
