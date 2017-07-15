@@ -12,7 +12,7 @@ The button will show the wave-form on playing the media.
 ![image](https://github.com/Paroca72/sc-player/blob/master/raw/1.jpg)
 ![image](https://github.com/Paroca72/sc-player/blob/master/raw/2.jpg)
 
-This class inherit from the android View class.<br/ >
+This class inherit from the android View class.<br />
 So for example if you would change the background is enough to use the `android:background` property.
 For customize the component please read guide below.
 
@@ -52,9 +52,6 @@ Set the current media player volume (0..1).
 - **get/setPosition**  -> `int` value, default `0`<br />
 Set the current media player position.
 
-- **get/setPosition**  -> `int` value, default `0`<br />
-Set the current media player position.
-
 <br />
 
 #### Interfaces
@@ -67,6 +64,16 @@ Called when the media stop to play.<br />
 <br />
 <br />
 
+#### XML Properties
+
+```xml
+<declare-styleable name="ScPlayerButton">
+    <attr name="source" format="string" />
+    <attr name="color" format="color" />
+    <attr name="fontSize" format="dimension" />
+    <attr name="volume" format="float" />
+</declare-styleable>
+```
 
 # Usage
 
