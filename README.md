@@ -86,7 +86,7 @@ Add the dependency
 ```java
 dependencies {
     ...
-    compile 'com.github.paroca72:sc-player:1.0.0'
+    compile 'com.github.paroca72:sc-player:1.0.1'
 }
 ```
 
