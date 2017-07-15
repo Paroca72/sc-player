@@ -3,10 +3,10 @@
 
     <!-- Components -->
     <declare-styleable name="ScPlayerButton">
-        <attr name="scc_source" format="string" />
-        <attr name="scc_color" format="color" />
-        <attr name="scc_font_size" format="dimension" />
-        <attr name="scc_volume" format="float" />
+        <attr name="source" format="string" />
+        <attr name="color" format="color" />
+        <attr name="fontSize" format="dimension" />
+        <attr name="volume" format="float" />
     </declare-styleable>
 
 </resources>

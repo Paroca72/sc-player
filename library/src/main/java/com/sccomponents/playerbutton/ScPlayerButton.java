@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -38,9 +37,8 @@ import java.util.concurrent.TimeUnit;
 
 public class ScPlayerButton extends View {
 
-    /****************************************************************************************
-     * Constants
-     */
+    // ***************************************************************************************
+    // Constants
 
     private static final String BACKGROUND_COLOR = "#FCC81A";
     private static final String FOREGROUND_COLOR = "#FFFFFF";
@@ -51,9 +49,8 @@ public class ScPlayerButton extends View {
     private static final float VOLUME = 0.7f;
 
 
-    /****************************************************************************************
-     * Privates attributes
-     */
+    // ***************************************************************************************
+    // Privates attributes
 
     private String mSource = null;
     private int mColor = Color.WHITE;
@@ -61,9 +58,8 @@ public class ScPlayerButton extends View {
     private float mVolume = ScPlayerButton.VOLUME;
 
 
-    /****************************************************************************************
-     * Privates variable
-     */
+    // ***************************************************************************************
+    // Privates variable
 
     private static Drawable mPlayIcon = null;
     private static Drawable mStopIcon = null;
@@ -81,7 +77,8 @@ public class ScPlayerButton extends View {
     private OnEventListener mEventListener = null;
 
     // Temp variable
-    private Paint mGenericPaint = null;
+    private Paint mTimePaint = null;
+    private Paint mWavePaint = null;
     private Rect mGenericRect = null;
     private Path mGenericPath = null;
 
@@ -143,13 +140,13 @@ public class ScPlayerButton extends View {
 
         // Read all attributes from xml and assign the value to linked variables
         this.mSource = attrArray.getString(
-                R.styleable.ScPlayerButton_scc_source);
+                R.styleable.ScPlayerButton_source);
         this.mColor = attrArray.getColor(
-                R.styleable.ScPlayerButton_scc_color, Color.parseColor(ScPlayerButton.FOREGROUND_COLOR));
+                R.styleable.ScPlayerButton_color, Color.parseColor(ScPlayerButton.FOREGROUND_COLOR));
         this.mFontSize = attrArray.getDimension(
-                R.styleable.ScPlayerButton_scc_font_size, this.dipToPixel(ScPlayerButton.FONT_SIZE));
+                R.styleable.ScPlayerButton_fontSize, this.dipToPixel(ScPlayerButton.FONT_SIZE));
         this.mVolume = attrArray.getFloat(
-                R.styleable.ScPlayerButton_scc_volume, ScPlayerButton.VOLUME);
+                R.styleable.ScPlayerButton_volume, ScPlayerButton.VOLUME);
 
         // Recycle
         attrArray.recycle();
@@ -168,7 +165,16 @@ public class ScPlayerButton extends View {
         this.mDetector = new GestureDetector(this.getContext(), new SingleTapConfirm());
         this.mExecutor = Executors.newSingleThreadScheduledExecutor();
         this.mMediaDuration = this.getMediaDuration(this.mSource);
-        this.mGenericPaint = new Paint();
+
+        this.mTimePaint = new Paint();
+        this.mTimePaint.setAntiAlias(true);
+        this.mTimePaint.setTypeface(Typeface.DEFAULT);
+
+        this.mWavePaint = new Paint();
+        this.mWavePaint.setAntiAlias(true);
+        this.mWavePaint.setStrokeWidth(2.0f);
+        this.mWavePaint.setStyle(Paint.Style.STROKE);
+
         this.mGenericRect = new Rect();
         this.mDrawingArea = new Rect();
         this.mGenericPath = new Path();
@@ -232,24 +238,6 @@ public class ScPlayerButton extends View {
         else
             return (hours < 10 ? "0" + hours : hours) + ":" +
                     (minutes < 10 ? "0" + minutes : minutes);
-    }
-
-    /**
-     * Measure a text
-     *
-     * @param text to measure
-     * @param size of text
-     * @return the width and height
-     */
-    private Point getTextDimensions(String text, float size) {
-        // Reset and set the painter
-        this.mGenericPaint.reset();
-        this.mGenericPaint.setTypeface(Typeface.DEFAULT);
-        this.mGenericPaint.setTextSize(size);
-
-        // Get the bounds and return it
-        this.mGenericPaint.getTextBounds(text, 0, text.length(), this.mGenericRect);
-        return new Point(this.mGenericRect.width(), this.mGenericRect.height());
     }
 
     /**
@@ -518,6 +506,10 @@ public class ScPlayerButton extends View {
      * @return the rect area
      */
     private Rect drawTime(Canvas canvas, Rect area) {
+        // Set the painter
+        this.mTimePaint.setColor(this.mColor);
+        this.mTimePaint.setTextSize(this.mFontSize);
+
         // Get the time to display
         long time = this.mMediaDuration;
         if (this.isSelected() &&
@@ -526,26 +518,20 @@ public class ScPlayerButton extends View {
 
         // Format the duration and get the dimension
         String timeFormatted = this.formatTime(time);
-        Point dimension = this.getTextDimensions(timeFormatted, this.mFontSize);
+        this.mTimePaint.getTextBounds(timeFormatted, 0, timeFormatted.length(), this.mGenericRect);
 
         // Calculate the position
-        int x = (area.width() - dimension.x) / 2;
+        int x = (area.width() - this.mGenericRect.width()) / 2;
         int y = area.bottom;
-
-        // Set the painter
-        this.mGenericPaint.reset();
-        this.mGenericPaint.setColor(this.mColor);
-        this.mGenericPaint.setTypeface(Typeface.DEFAULT);
-        this.mGenericPaint.setTextSize(this.mFontSize);
 
         // Draw the text on the canvas
         int margin = 20;
-        canvas.drawText(timeFormatted, x, y - margin, this.mGenericPaint);
+        canvas.drawText(timeFormatted, x, y - margin, this.mTimePaint);
 
         // Reduce the drawing area
         return new Rect(
                 area.left, area.top,
-                area.right, area.bottom - dimension.y - margin
+                area.right, area.bottom - this.mGenericRect.height() - margin
         );
     }
 
@@ -595,14 +581,9 @@ public class ScPlayerButton extends View {
             }
         }
 
-        // Set the paint
-        this.mGenericPaint.setColor(this.mColor);
-        this.mGenericPaint.setStrokeWidth(2.0f);
-        this.mGenericPaint.setStyle(Paint.Style.STROKE);
-        this.mGenericPaint.setAntiAlias(true);
-
         // Draw the path on canvas
-        canvas.drawPath(this.mGenericPath, this.mGenericPaint);
+        this.mWavePaint.setColor(this.mColor);
+        canvas.drawPath(this.mGenericPath, this.mWavePaint);
     }
 
     /**
