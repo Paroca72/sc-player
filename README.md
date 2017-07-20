@@ -18,7 +18,7 @@ For customize the component please read guide below.
 
 #### Public methods
 
-- **long getDuration()**<br />
+- **int getDuration()**<br />
 Get back the media duration.
 
 - **boolean isPlaying()**<br />
@@ -93,7 +93,7 @@ Add the dependency
 ```java
 dependencies {
     ...
-    compile 'com.github.paroca72:sc-player:1.0.1'
+    compile 'com.github.paroca72:sc-player:1.0.2'
 }
 ```
 

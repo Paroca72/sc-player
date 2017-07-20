@@ -11,7 +11,6 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.media.audiofx.Visualizer;
 import android.net.Uri;
@@ -68,7 +67,7 @@ public class ScPlayerButton extends View {
     private Visualizer mVisualizer = null;
 
     private int mPosition = 0;
-    private long mMediaDuration = 0;
+    private int mMediaDuration = 0;
     private byte[] mWaveToken = null;
     private Rect mDrawingArea = null;
 
@@ -202,13 +201,11 @@ public class ScPlayerButton extends View {
      * @param source the media path
      * @return the duration in milliseconds
      */
-    private long getMediaDuration(String source) {
+    private int getMediaDuration(String source) {
         try {
             // Try to get the media duration
-            MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-            mmr.setDataSource(this.getContext(), Uri.parse(source));
-            String durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-            return Long.parseLong(durationStr);
+            MediaPlayer player = MediaPlayer.create(this.getContext(), Uri.parse(source));
+            return player.getDuration();
 
         } catch (Exception ex) {
             // Print the error on the stack and return
@@ -225,11 +222,11 @@ public class ScPlayerButton extends View {
      * @param duration the duration in milliseconds
      * @return the format time
      */
-    private String formatTime(long duration) {
+    private String formatTime(int duration) {
         // Get the tokens
-        long seconds = (duration / 1000) % 60;
-        long minutes = (seconds / 60) % 60;
-        long hours = (seconds / (60 * 60)) % 24;
+        int seconds = (duration / 1000) % 60;
+        int minutes = (seconds / 60) % 60;
+        int hours = (seconds / (60 * 60)) % 24;
 
         // Format
         if (hours == 0)
@@ -394,7 +391,7 @@ public class ScPlayerButton extends View {
      */
     private ScheduledExecutorService initUpdate() {
         // Start new one
-        long milliseconds = (long) ((1 / (float) ScPlayerButton.UPDATE_FREQUENCY) * 1000);
+        int milliseconds = (int) ((1 / (float) ScPlayerButton.UPDATE_FREQUENCY) * 1000);
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
         executor.scheduleAtFixedRate(new Runnable() {
             @Override
@@ -511,7 +508,7 @@ public class ScPlayerButton extends View {
         this.mTimePaint.setTextSize(this.mFontSize);
 
         // Get the time to display
-        long time = this.mMediaDuration;
+        int time = this.mMediaDuration;
         if (this.isSelected() &&
                 this.mPlayer != null && this.mPlayer.isPlaying())
             time = this.mPlayer.getCurrentPosition();
@@ -746,7 +743,7 @@ public class ScPlayerButton extends View {
      * @return in milliseconds
      */
     @SuppressWarnings("unused")
-    public long getDuration() {
+    public int getDuration() {
         return this.mMediaDuration;
     }
 
