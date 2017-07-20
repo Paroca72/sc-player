@@ -202,15 +202,21 @@ public class ScPlayerButton extends View {
      * @return the duration in milliseconds
      */
     private int getMediaDuration(String source) {
+        MediaPlayer player = null;
         try {
             // Try to get the media duration
-            MediaPlayer player = MediaPlayer.create(this.getContext(), Uri.parse(source));
+            player = MediaPlayer.create(this.getContext(), Uri.parse(source));
             return player.getDuration();
 
         } catch (Exception ex) {
             // Print the error on the stack and return
             ex.printStackTrace();
             return 0;
+
+        } finally {
+            // Release the player
+            if (player != null)
+                player.release();
         }
     }
 
